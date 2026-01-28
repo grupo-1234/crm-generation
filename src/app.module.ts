@@ -1,24 +1,24 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-//import { UsuarioModule } from './usuario/usuario.module';
-//import { AuthModule } from './auth/auth.module';
-//import { Usuario } from './usuario/entities/usuario.entity';
+import { UsuarioModule } from './usuario/usuario.module';
+import { AuthModule } from './auth/auth.module';
+import { Usuario } from './usuario/entities/usuario.entity';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
-        type: 'mysql',
-        host: 'localhost',
-        port: 3306,
-        username: 'root',
-        password: 'root',
-        database: 'db_crm',
-        entities: [],
-        synchronize: true,
-}),
-    //AuthModule,
-    //UsuarioModule
-],
+      type: 'mysql',
+      host: 'localhost',
+      port: 3306,
+      username: 'root',
+      password: 'root',
+      database: 'db_crm',
+      entities: [],
+      synchronize: true,
+    }),
+    AuthModule,
+    UsuarioModule,
+  ],
   controllers: [],
   providers: [],
 })

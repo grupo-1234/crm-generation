@@ -1,0 +1,147 @@
+# Anotações do Projeto (CRM) — DTO, Validações e Padrão de Pastas
+
+## 1) O que é DTO (bem simples)
+DTO (Data Transfer Object) é um “molde” do que o backend aceita/recebe no body da requisição.
+Ele serve pra:
+- organizar os dados que chegam
+- validar antes de chegar no service
+- evitar receber campos errados (ex: id vindo no create, campos a mais, etc.)
+- deixar o código mais limpo e fácil de manter
+
+✅ Resumo: **DTO = validação + organização do input.**
+
+---
+
+## 2) Por que DTO tem que existir no nosso projeto
+Porque a gente precisa garantir que:
+- os campos obrigatórios não venham vazios
+- tamanho máximo de texto seja respeitado
+- não entre dados inválidos (ex: preço negativo, nome vazio)
+- o controller fique “limpo”, só chamando o service
+
+Sem DTO, o sistema até pode rodar, mas fica:
+- mais fácil de dar erro
+- mais difícil de testar/manter
+- menos “profissional” (o professor costuma cobrar validação)
+
+---
+
+## 3) Onde criar DTO (pasta padrão)
+Dentro do módulo, criar a pasta:
+
+src/<modulo>/dto/
+
+Exemplo:
+src/categoria/dto/
+src/servico/dto/
+src/usuario/dto/
+
+---
+
+## 4) Quais DTOs criar (padrão mínimo)
+Para cada entidade, criar no mínimo:
+
+- create-<entidade>.dto.ts
+- update-<entidade>.dto.ts
+
+Exemplo (Categoria):
+- create-categoria.dto.ts
+- update-categoria.dto.ts
+
+Regras:
+- CREATE: não precisa de id
+- UPDATE: precisa de id + campos que podem mudar
+
+---
+
+## 5) Onde usar o DTO (na prática)
+### Controller
+No controller, usar o DTO como tipo no @Body() e ativar validação:
+
+Exemplo:
+@Post()
+@UsePipes(ValidationPipe)
+create(@Body() dto: CreateCategoriaDto) { ... }
+
+@Put()
+@UsePipes(ValidationPipe)
+update(@Body() dto: UpdateCategoriaDto) { ... }
+
+Se o projeto tiver ValidationPipe global no main.ts, nem precisa repetir @UsePipes em toda rota.
+
+### Service
+No service, o método recebe o dto:
+create(dto: CreateCategoriaDto)
+update(dto: UpdateCategoriaDto)
+
+O service cuida das regras:
+- verificar duplicidade
+- lançar HttpException quando necessário
+- salvar no repository
+
+---
+
+## 6) O que validar nos DTOs (guia rápido)
+### Textos (nome, descricao)
+- @IsNotEmpty() -> obrigatório
+- @MaxLength(x) -> tamanho máximo
+
+### Número (preco, estoque)
+- @IsNumber()
+- @Min(0) -> não deixar negativo
+
+### Email / senha (Usuário)
+- @IsEmail()
+- @MinLength(6) / etc.
+
+---
+
+## 7) Checklist para cada módulo (pra ninguém esquecer)
+Para cada entidade (Categoria / Serviço / Usuário), precisa existir:
+
+✅ entities/<entidade>.entity.ts  
+✅ dto/create-<entidade>.dto.ts  
+✅ dto/update-<entidade>.dto.ts  
+✅ <entidade>.service.ts  
+✅ <entidade>.controller.ts  
+✅ <entidade>.module.ts  
+✅ Rotas CRUD (POST, GET, GET/:id, PUT, DELETE)
+
+---
+
+## 8) Observações importantes
+- DTO NÃO substitui Entity.
+  - Entity = tabela do banco
+  - DTO = formato/validação do que chega na API
+
+- Entity não deve receber validações do class-validator (o ideal é manter validações no DTO).
+
+- Se mudar a regra de campo (ex: adicionar preco), tem que atualizar:
+  1) Entity
+  2) CreateDTO
+  3) UpdateDTO
+  4) (se tiver) testes
+
+---
+
+## 9) Exemplo rápido (Categoria)
+### CreateCategoriaDto
+- nome obrigatório
+- descrição opcional
+
+### UpdateCategoriaDto
+- id obrigatório
+- nome obrigatório
+- descrição opcional
+
+---
+
+## 10) Dúvidas rápidas
+- "Por que não usar a Entity no @Body()?"
+  Porque a Entity é do banco e pode ter campos que não deveriam vir do usuário.
+  DTO separa o que o usuário pode enviar do que é do banco.
+
+- "DTO é obrigatório?"
+  Em projetos bem feitos sim (e geralmente o professor cobra validação).
+
+Fim ✅
