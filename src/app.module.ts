@@ -4,6 +4,9 @@ import { AppController } from './app.controller';
 import { ProdutoModule } from './produtos/produto.module';
 import { AppService } from './app.service';
 import { Produto } from './produtos/entities/produto.entity';
+//import { UsuarioModule } from './usuario/usuario.module';
+//import { AuthModule } from './auth/auth.module';
+//import { Usuario } from './usuario/entities/usuario.entity';
 
 @Module({
   imports: [
@@ -21,5 +24,10 @@ import { Produto } from './produtos/entities/produto.entity';
 ],
   controllers: [AppController],
   providers: [AppService],
+    //AuthModule,
+    //UsuarioModule
+],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
