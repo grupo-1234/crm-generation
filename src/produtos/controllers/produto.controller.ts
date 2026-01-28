@@ -1,4 +1,4 @@
-import { Controller, Get, Delete, Post, Put, Param, ParseIntPipe, Body, HttpCode, HttpStatus } from "@nestjs/common";
+import { Controller, Get, Delete, Post, Put, Param, ParseIntPipe, Body, HttpCode, HttpStatus, Patch } from "@nestjs/common";
 import { Produto } from "../entities/produto.entity";
 import { ProdutoService } from "../services/produto.service";
 
@@ -47,4 +47,11 @@ export class ProdutoController{
     delete(@Param('id', ParseIntPipe) id: number){
         return this.produtoService.delete(id);
     }
+
+    @Patch(':id/status')
+    @HttpCode(HttpStatus.OK)
+    atualizarStatus(@Param('id', ParseIntPipe) id: number): Promise<Produto>{
+        return this.produtoService.atualizarStatus(id);
+    }
+    
 }

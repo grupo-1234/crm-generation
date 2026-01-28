@@ -2,6 +2,8 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { ProdutoModule } from './produtos/produto.module';
+import { AppService } from './app.service';
+import { Produto } from './produtos/entities/produto.entity';
 
 @Module({
   imports: [
@@ -12,12 +14,12 @@ import { ProdutoModule } from './produtos/produto.module';
         username: 'root',
         password: 'root',
         database: 'db_crm',
-        entities: [],
+        entities: [Produto],
         synchronize: true,
 }),
-  ProdutoModule,
+  // ProdutoModule, //
 ],
   controllers: [AppController],
-  providers: [],
+  providers: [AppService],
 })
 export class AppModule {}
