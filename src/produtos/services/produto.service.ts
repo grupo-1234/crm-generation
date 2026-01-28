@@ -2,21 +2,22 @@ import { Injectable, HttpException, HttpStatus, NotFoundException } from "@nestj
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository, ILike, DeleteResult } from "typeorm";
 import { Produto } from "../entities/produto.entity";
+import { CategoriaService } from "../../categoria/services/categoria.service";
 
 @Injectable()
 export class ProdutoService{
     constructor(
         @InjectRepository(Produto)
         private produtoRepository: Repository<Produto>,
-       // private categoriaService: CategoriaService //
+       private categoriaService: CategoriaService 
     ) {}
 
     async findAll(): Promise<Produto[]>{
         return await this.produtoRepository.find({
-           /* relations:{
+            relations:{
                 usuario: true,
                 categoria: true,
-            } */
+            } 
         });
     }
 
@@ -25,10 +26,10 @@ export class ProdutoService{
             where: {
                 id
             },
-           /* relations:{
+            relations:{
                 usuario: true,
                 categoria: true
-            } */
+            } 
         });
 
         if (!produto){
@@ -42,40 +43,40 @@ export class ProdutoService{
             where:{
                 nomeProduto: ILike(`%${nomeProduto}%`)
             },
-           /* relations:{
+           relations:{
                 usuario: true,
                 categoria: true
-            } */
+            } 
         })
     }
 
-    async atualizarStatus(id: number): Promise<Produto> { 
-        const produto = await this.produtoRepository.findOne({ 
-            where: {
-                id 
-            } 
-        });
+    // async atualizarStatus(id: number): Promise<Produto> { 
+    //     const produto = await this.produtoRepository.findOne({ 
+    //         where: {
+    //             id 
+    //         } 
+    //     });
 
-        if (!produto) { 
-            throw new NotFoundException('Produto não encontrado'); }
+    //     if (!produto) { 
+    //         throw new NotFoundException('Produto não encontrado'); }
         
-        produto.status = true;
+    //     produto.status = true;
 
-        return await this.produtoRepository.save(produto);
-    }
+    //     return await this.produtoRepository.save(produto);
+    // }
 
-    /* async atualizarStatus(id: number, status: boolean): Promise<Produto> {
+    async atualizarStatus(id: number, status: boolean): Promise<Produto> {
         const produto = await this.findById(id);
         
         produto.status = status;
 
         return await this.produtoRepository.save(produto);
-    } */
+    } 
 
 
     async create (produto: Produto): Promise<Produto>{
 
-       // await this.categoriaService.findById(produto.categoria.id) //
+        await this.categoriaService.findById(produto.categoria.id) //
 
         return await this.produtoRepository.save(produto);
      }
@@ -84,7 +85,7 @@ export class ProdutoService{
 
         await this.findById(produto.id)
         
-      //  await this.categoriaService.findById(produto.categoria.id) //
+      await this.categoriaService.findById(produto.categoria.id) 
 
         return await this.produtoRepository.save(produto);
     }

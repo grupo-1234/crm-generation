@@ -1,6 +1,7 @@
 import { IsEmail, IsNotEmpty, MinLength } from 'class-validator';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Categoria } from '../../categoria/entities/categoria.entity';
+import { Produto } from '../../produtos/entities/produto.entity';
 
 @Entity({ name: 'tb_usuarios' })
 export class Usuario {
@@ -28,6 +29,6 @@ export class Usuario {
   @Column({ length: 50, nullable: false })
   perfil: string;
 
-  @OneToMany(() => Categoria, (categoria) => categoria.usuario)
-  categorias: Categoria[];
+  @OneToMany(() => Produto, (produto) => produto.usuario)
+  produto: Produto[];
 }

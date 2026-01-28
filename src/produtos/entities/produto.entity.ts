@@ -1,5 +1,7 @@
 import { IsNotEmpty } from "class-validator"
 import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm"
+import { Usuario } from "../../usuario/entities/usuario.entity";
+import { Categoria } from "../../categoria/entities/categoria.entity";
 
 @Entity({name: "tb_produtos"})
 export class Produto{
@@ -23,11 +25,15 @@ export class Produto{
     //@ApiProperty()// 
     status: boolean;
 
-    /*@ApiProperty()
-    @ManyToOne(() => Usuario, (usuario) => usuario.produto,{
+    //@ApiProperty()
+    @ManyToOne(() => Usuario, (usuario) => usuario.produto, {
         onDelete: "CASCADE"
     })
+    usuario: Usuario;
     
-    usuario: Usuario;*/
+     @ManyToOne(() => Categoria, (categoria) => categoria.produto, {
+        onDelete: "CASCADE"
+    })
+    categoria: Categoria;
 
 }

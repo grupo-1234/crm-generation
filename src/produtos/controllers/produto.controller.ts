@@ -1,12 +1,12 @@
-import { Controller, Get, Delete, Post, Put, Param, ParseIntPipe, Body, HttpCode, HttpStatus, Patch } from "@nestjs/common";
+import { Controller, Get, Delete, Post, Put, Param, ParseIntPipe, Body, HttpCode, HttpStatus, Patch, UseGuards } from "@nestjs/common";
 import { Produto } from "../entities/produto.entity";
 import { ProdutoService } from "../services/produto.service";
+import { JwtAuthGuard } from "../../auth/guard/jwt-auth.guard";
 
-
-//@ApiTags('Produto')//
-//@UseGuards(JwtAuthGuard)//
+//@ApiTags('Produto')
+@UseGuards(JwtAuthGuard)
 @Controller("/produtos")
-//@ApiBearerAuth()//
+//@ApiBearerAuth()
 export class ProdutoController{
     constructor(private readonly produtoService: ProdutoService) {} 
 
@@ -48,10 +48,10 @@ export class ProdutoController{
         return this.produtoService.delete(id);
     }
 
-    @Patch(':id/status')
-    @HttpCode(HttpStatus.OK)
-    atualizarStatus(@Param('id', ParseIntPipe) id: number): Promise<Produto>{
-        return this.produtoService.atualizarStatus(id);
-    }
+    // @Patch(':id/status')
+    // @HttpCode(HttpStatus.OK)
+    // atualizarStatus(@Param('id', ParseIntPipe) id: number): Promise<Produto>{
+    //     return this.produtoService.atualizarStatus(id);
+    // }
     
 }

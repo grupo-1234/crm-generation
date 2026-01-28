@@ -1,5 +1,6 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { Usuario } from '../../usuario/entities/usuario.entity';
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Produto } from '../../produtos/entities/produto.entity';
+import { IsNotEmpty } from 'class-validator';
 
 @Entity({ name: 'tb_categorias' })
 export class Categoria {
@@ -9,11 +10,11 @@ export class Categoria {
   @Column({ length: 100, unique: true })
   nome: string;
 
-  @Column({ length: 255, nullable: true })
-  descricao?: string;
+  @IsNotEmpty()
+  @Column({ length: 255, nullable: false })
+  descricao: string;
 
-  @ManyToOne(() => Usuario, (usuario) => usuario.categorias, {
-    onDelete: 'CASCADE',
-  })
-  usuario: Usuario;
+  @OneToMany(() => Produto, (produto) => produto.usuario)
+  produto: Produto[];
+
 }

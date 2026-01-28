@@ -1,61 +1,47 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  HttpCode,
-  HttpStatus,
-  Param,
-  ParseIntPipe,
-  Post,
-  Put,
-  UsePipes,
-  ValidationPipe,
-} from '@nestjs/common';
-import { CategoriaService } from '../services/categoria.service';
-import { Categoria } from '../entities/categoria.entity';
-import { CreateCategoriaDto } from '../dto/create.categoria.dto';
-import { UpdateCategoriaDto } from '../dto/update.categoria.dto';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, ParseIntPipe, Post, Put, UseGuards } from "@nestjs/common";
+import { Categoria } from "../entities/categoria.entity";
+import { CategoriaService } from "../services/categoria.service";
+import { JwtAuthGuard } from "../../auth/guard/jwt-auth.guard";
 
-@Controller('categorias')
-export class CategoriaController {
-  constructor(private readonly categoriaService: CategoriaService) {}
 
-  @Get()
-  @HttpCode(HttpStatus.OK)
-  findAll(): Promise<Categoria[]> {
-    return this.categoriaService.findAll();
-  }
+  @UseGuards(JwtAuthGuard)
+  @Controller("/categoria")
+  export class CategoriaController {
+    constructor(private readonly categoriaService: CategoriaService) {}
 
-  @Get(':id')
-  @HttpCode(HttpStatus.OK)
-  findById(@Param('id', ParseIntPipe) id: number): Promise<Categoria> {
-    return this.categoriaService.findById(id);
-  }
+    @Get()
+    @HttpCode(HttpStatus.OK)
+    findAll(): Promise<Categoria[]> {
+        return this.categoriaService.findAll();
+    }
 
-  @Get('nome/:nome')
-  @HttpCode(HttpStatus.OK)
-  findByNome(@Param('nome') nome: string): Promise<Categoria[]> {
-    return this.categoriaService.findByNome(nome);
-  }
+    @Get('/:id')
+    @HttpCode(HttpStatus.OK)
+    findById(@Param('id', ParseIntPipe) id: number): Promise<Categoria>{
+        return this.categoriaService.findById(id)
+    }
 
-  @Post()
-  @UsePipes(ValidationPipe)
-  @HttpCode(HttpStatus.CREATED)
-  create(@Body() dto: CreateCategoriaDto): Promise<Categoria> {
-    return this.categoriaService.create(dto);
-  }
+    @Get('/descricao/:descricao')
+    @HttpCode(HttpStatus.OK)
+    findAllBydescricao(@Param('descricao') descricao: string): Promise<Categoria[]>{
+        return this.categoriaService.findAllByDescricao(descricao);
+    }
 
-  @Put()
-  @UsePipes(ValidationPipe)
-  @HttpCode(HttpStatus.OK)
-  update(@Body() dto: UpdateCategoriaDto): Promise<Categoria> {
-    return this.categoriaService.update(dto);
-  }
+    @Post()
+    @HttpCode(HttpStatus.CREATED)
+    create(@Body() categoria: Categoria): Promise<Categoria>{
+        return this.categoriaService.create(categoria)
+    }
 
-  @Delete(':id')
-  @HttpCode(HttpStatus.NO_CONTENT)
-  delete(@Param('id', ParseIntPipe) id: number): Promise<void> {
-    return this.categoriaService.delete(id);
-  }
+    @Put()
+    @HttpCode(HttpStatus.OK)
+    update(@Body() categoria: Categoria): Promise<Categoria>{
+        return this.categoriaService.update(categoria)
+    }
+
+    @Delete('/:id')
+    @HttpCode(HttpStatus.NO_CONTENT)
+    delete(@Param('id', ParseIntPipe) id: number){
+        return this.categoriaService.delete(id)
+    }
 }

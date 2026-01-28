@@ -4,9 +4,11 @@ import { AppController } from './app.controller';
 import { ProdutoModule } from './produtos/produto.module';
 import { AppService } from './app.service';
 import { Produto } from './produtos/entities/produto.entity';
-//import { UsuarioModule } from './usuario/usuario.module';
-//import { AuthModule } from './auth/auth.module';
-//import { Usuario } from './usuario/entities/usuario.entity';
+import { UsuarioModule } from './usuario/usuario.module';
+import { AuthModule } from './auth/auth.module';
+import { Usuario } from './usuario/entities/usuario.entity';
+import { Categoria } from './categoria/entities/categoria.entity';
+import { CategoriaModule } from './categoria/categoria.module';
 
 @Module({
   imports: [
@@ -17,17 +19,15 @@ import { Produto } from './produtos/entities/produto.entity';
         username: 'root',
         password: 'root',
         database: 'db_crm',
-        entities: [Produto],
+        entities: [Produto,Usuario,Categoria],
         synchronize: true,
-}),
-  // ProdutoModule, //
+}),  
+    AuthModule,
+    UsuarioModule,
+    ProdutoModule,
+    CategoriaModule
 ],
   controllers: [AppController],
   providers: [AppService],
-    //AuthModule,
-    //UsuarioModule
-],
-  controllers: [],
-  providers: [],
 })
 export class AppModule {}
