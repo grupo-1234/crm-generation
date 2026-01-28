@@ -28,6 +28,6 @@ import { CategoriaModule } from './categoria/categoria.module';
     CategoriaModule
 ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [],
 })
 export class AppModule {}
