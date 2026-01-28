@@ -1,5 +1,9 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AppController } from './app.controller';
+import { ProdutoModule } from './produtos/produto.module';
+import { AppService } from './app.service';
+import { Produto } from './produtos/entities/produto.entity';
 //import { UsuarioModule } from './usuario/usuario.module';
 //import { AuthModule } from './auth/auth.module';
 //import { Usuario } from './usuario/entities/usuario.entity';
@@ -13,9 +17,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
         username: 'root',
         password: 'root',
         database: 'db_crm',
-        entities: [],
+        entities: [Produto],
         synchronize: true,
 }),
+  // ProdutoModule, //
+],
+  controllers: [AppController],
+  providers: [AppService],
     //AuthModule,
     //UsuarioModule
 ],
