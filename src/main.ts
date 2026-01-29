@@ -8,8 +8,8 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
   .setTitle('CRM')
-  .setDescription('Projeto CRM')
-  .setContact("Generation Brasil","http://www.generationbrasil.online","generation@email.com")
+  .setDescription('CRM Generation')
+  .setContact("CRM Generation","http://www.crmgeneration.online","crmgeneration@email.com")
   .setVersion('1.0')
   .addBearerAuth()
   .build();

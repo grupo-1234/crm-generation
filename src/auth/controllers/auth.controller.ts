@@ -9,7 +9,7 @@ import {
 import { LocalAuthGuard } from '../guard/local-auth.guard';
 import { AuthService } from '../services/auth.service';
 import { UsuarioLogin } from './../entities/usuariologin.entity';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Usuario')
 @Controller('/usuarios')
@@ -18,6 +18,7 @@ export class AuthController {
 
   @UseGuards(LocalAuthGuard)
   @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Fazer Login de usuário' })
   @Post('/logar')
   async login(@Body() usuario: UsuarioLogin): Promise<any> {
     return this.authService.login(usuario);
