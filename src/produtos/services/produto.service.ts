@@ -50,28 +50,22 @@ export class ProdutoService{
         })
     }
 
-    // async atualizarStatus(id: number): Promise<Produto> { 
-    //     const produto = await this.produtoRepository.findOne({ 
-    //         where: {
-    //             id 
-    //         } 
-    //     });
+    
+    async atualizarStatus(id: number): Promise<Produto> { 
+        const produto = await this.produtoRepository.findOne({ 
+            where: {
+                id 
+            } 
+        });
 
-    //     if (!produto) { 
-    //         throw new NotFoundException('Produto não encontrado'); }
+        if (!produto) { 
+            throw new NotFoundException('Produto não encontrado'); }
         
-    //     produto.status = true;
-
-    //     return await this.produtoRepository.save(produto);
-    // }
-
-    async atualizarStatus(id: number, status: boolean): Promise<Produto> {
-        const produto = await this.findById(id);
-        
-        produto.status = status;
+        produto.status = true;
 
         return await this.produtoRepository.save(produto);
-    } 
+    }
+
 
 
     async create (produto: Produto): Promise<Produto>{

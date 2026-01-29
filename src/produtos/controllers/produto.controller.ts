@@ -2,7 +2,7 @@ import { Controller, Get, Delete, Post, Put, Param, ParseIntPipe, Body, HttpCode
 import { Produto } from "../entities/produto.entity";
 import { ProdutoService } from "../services/produto.service";
 import { JwtAuthGuard } from "../../auth/guard/jwt-auth.guard";
-import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiOperation, ApiTags } from "@nestjs/swagger";
 
 @ApiTags('Produto')
 @UseGuards(JwtAuthGuard)
@@ -10,7 +10,7 @@ import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 @ApiBearerAuth()
 export class ProdutoController{
     constructor(private readonly produtoService: ProdutoService) {} 
-
+    @ApiOperation({ summary: 'Criar usuário' })
     @Get()  
     @HttpCode(HttpStatus.OK) 
     findAll(): Promise<Produto[]>{
@@ -49,10 +49,10 @@ export class ProdutoController{
         return this.produtoService.delete(id);
     }
 
-    // @Patch(':id/status')
-    // @HttpCode(HttpStatus.OK)
-    // atualizarStatus(@Param('id', ParseIntPipe) id: number): Promise<Produto>{
-    //     return this.produtoService.atualizarStatus(id);
-    // }
+    @Patch(':id/status')
+    @HttpCode(HttpStatus.OK)
+    atualizarStatus(@Param('id', ParseIntPipe) id: number,): Promise<Produto>{
+        return this.produtoService.atualizarStatus(id);
+    }
     
 }

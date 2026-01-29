@@ -1,4 +1,4 @@
-import { IsNotEmpty } from "class-validator"
+import { IsNotEmpty, IsNumber, IsPositive, IsString, MaxLength } from "class-validator"
 import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm"
 import { Usuario } from "../../usuario/entities/usuario.entity";
 import { Categoria } from "../../categoria/entities/categoria.entity";
@@ -11,12 +11,22 @@ export class Produto{
     @ApiProperty() 
     id: number
 
-    @IsNotEmpty()
-    @Column({length: 255, nullable: false})
+    @IsNotEmpty({message: "O nomé é obrigatório"})
+    @IsString({message: "O nome deve ser um texto"})
+    @MaxLength(100, { message: 'O nome deve ter no máximo 100 caracteres' })
     @ApiProperty()
+    @Column({length: 255, nullable: false})
     nomeProduto: string
 
-    @IsNotEmpty()
+    @IsNotEmpty({message: "A descrição é obrigatório"})
+    @MaxLength(200, { message: 'O nome deve ter no máximo 100 caracteres' })
+    @IsString({message: "A descrição deve ser um texto"})
+    @Column('text')
+    descricao: string;
+
+    @IsNotEmpty({ message: 'O preço é obrigatório' })
+    @IsNumber({}, { message: 'O preço deve ser um número' })
+    @IsPositive({ message: 'O preço deve ser maior que zero' })
     @Column({type: 'decimal', precision: 10, scale: 2})
     @ApiProperty() 
     preco: number;
