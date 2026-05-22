@@ -1,21 +1,18 @@
-import { Injectable } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
-import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from "@nestjs/typeorm";
+import { Injectable } from '@nestjs/common';
+import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
 
 @Injectable()
 export class ProdService implements TypeOrmOptionsFactory {
-
   createTypeOrmOptions(): TypeOrmModuleOptions {
     return {
-      type: 'postgres',
-      url: process.env.DATABASE_URL,
+      type: 'postgres',              // O tipo do seu banco na Render
+      url: process.env.DATABASE_URL, // <-- Captura a string única da Render diretamente
       logging: false,
-      dropSchema: false,
+      entities: [__dirname + '/../**/*.entity{.ts,.js}'],
+      synchronize: true,             // Sincroniza as tabelas automaticamente
       ssl: {
-        rejectUnauthorized: false,
+        rejectUnauthorized: false,   // Exigido pela Render para conexões seguras de banco
       },
-      synchronize: true,
-      autoLoadEntities: true,
     };
   }
 }

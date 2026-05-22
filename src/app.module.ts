@@ -12,15 +12,16 @@ import { DevService } from './data/dev.service';
 @Module({
   imports: [
     ConfigModule.forRoot(),
-      TypeOrmModule.forRootAsync({
-        useClass: DevService,
-          imports: [ConfigModule],
-      }),
+    TypeOrmModule.forRootAsync({
+      // Alterna de forma inteligente: se tiver DATABASE_URL, usa produção, se não, usa dev local
+      useClass: process.env.DATABASE_URL ? ProdService : DevService,
+      imports: [ConfigModule],
+    }),
     AuthModule,
     UsuarioModule,
     ProdutoModule,
     CategoriaModule
-],
+  ],
   controllers: [AppController],
   providers: [],
 })
