@@ -12,7 +12,7 @@ import { UsuarioLogin } from './../entities/usuariologin.entity';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Usuario')
-@Controller('/usuarios')
+@Controller('/usuario')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
